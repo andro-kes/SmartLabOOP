@@ -9,8 +9,8 @@ class Point {
 public:
     Point(T x = T(), T y = T()) : _x(x), _y(y) {}
 
-    T getX() const { return _x; }
-    T getY() const { return _y; }
+    T getX() const {return _x;}
+    T getY() const {return _y;}
     
 private:
     T _x;
