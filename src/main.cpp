@@ -6,6 +6,15 @@
 using namespace std;
 
 int main() {
+
+    //  @@@     @@@    @@@@@@
+    // @   @   @   @   @    @
+    // @   @   @   @   @    @
+    // @   @   @   @   @    @
+    // @   @   @   @   @    @
+    // @   @   @   @   @    @
+    //  @@@     @@@    @    @
+
     Array<shared_ptr<Figure<int>>> figures;
     
     // Создание ромба
