@@ -13,13 +13,6 @@ class Array {
 public:
     Array() noexcept : _size(0), _capacity(0), _data(nullptr) {}
 
-    explicit Array(size_t n) : _size(n), _capacity(n), _data(nullptr) {
-        if (_capacity) {
-            // T -> shared_ptr<Figure<int>>
-            _data = std::make_unique<T[]>(_capacity);
-        }
-    }
-
     // Копирующий конструктор
     Array(const Array& other) : _size(other._size), _capacity(other._capacity) {
         if (_capacity) {

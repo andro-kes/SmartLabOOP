@@ -5,13 +5,13 @@
 
 // PointContainer для хранения точек с использованием уникальных указателей
 // и односвязного списка
-template<class PointT>
+template<class P>
 class PointContainer {
 private:
     struct Node {
-        std::unique_ptr<PointT> point;
+        std::unique_ptr<P> point;
         Node* next;
-        Node(std::unique_ptr<PointT> p) : point(std::move(p)), next(nullptr) {}
+        Node(std::unique_ptr<P> p) : point(std::move(p)), next(nullptr) {}
     };
 
     Node* head = nullptr;
@@ -52,7 +52,7 @@ public:
         return *this;
     }
 
-    void push_back(std::unique_ptr<PointT> point) {
+    void push_back(std::unique_ptr<P> point) {
         Node* newNode = new Node(std::move(point));
         if (!head) head = newNode;
         else {
@@ -65,14 +65,14 @@ public:
 
     size_t size() const { return _size; }
 
-    PointT& operator[](size_t index) {
+    P& operator[](size_t index) {
         if (index >= _size) throw std::out_of_range("Index out of range");
         Node* cur = head;
         for (size_t i = 0; i < index; ++i) cur = cur->next;
         return *(cur->point);
     }
 
-    const PointT& operator[](size_t index) const {
+    const P& operator[](size_t index) const {
         if (index >= _size) throw std::out_of_range("Index out of range");
         Node* cur = head;
         for (size_t i = 0; i < index; ++i) cur = cur->next;
@@ -83,14 +83,14 @@ public:
 template<class T>
 class Figure {
 public:
-    using PointT = Point<T>;
+    using P = Point<T>;
 
     Figure() = default;
     virtual ~Figure() noexcept = default;
 
     Figure(const Figure<T>& other) {
         for (size_t i = 0; i < other.get_points_count(); ++i) {
-            points.push_back(std::make_unique<PointT>(other.get_point(i)));
+            points.push_back(std::make_unique<P>(other.get_point(i)));
         }
     }
 
@@ -98,7 +98,7 @@ public:
         if (this == &other) return *this;
         PointContainer<Point<T>> tmp;
         for (size_t i = 0; i < other.get_points_count(); ++i) {
-            tmp.push_back(std::make_unique<PointT>(other.get_point(i)));
+            tmp.push_back(std::make_unique<P>(other.get_point(i)));
         }
         this->points = std::move(tmp);
         return *this;
@@ -106,30 +106,30 @@ public:
 
     Figure(Figure<T>&& other) noexcept = default;
 
-    void add_point(const PointT& point) {
-        points.push_back(std::make_unique<PointT>(point));
+    void add_point(const P& point) {
+        points.push_back(std::make_unique<P>(point));
     }
 
     size_t get_points_count() const {
         return points.size();
     }
 
-    const PointT& get_point(size_t index) const {
+    const P& get_point(size_t index) const {
         return points[index];
     }
 
-    virtual PointT center() const = 0;
+    virtual P center() const = 0;
     virtual operator double() = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const Figure<T>& figure) {
         os << "Фигура с " << figure.points.size() << " точками:\n";
         for (size_t i = 0; i < figure.points.size(); ++i) {
-            const PointT& p = figure.points[i];
+            const P& p = figure.points[i];
             os << "Точка " << i << ": (" << p.getX() << ", " << p.getY() << ")\n";
         }
         return os;
     }
 
 protected:
-    PointContainer<PointT> points;
+    PointContainer<P> points;
 };
